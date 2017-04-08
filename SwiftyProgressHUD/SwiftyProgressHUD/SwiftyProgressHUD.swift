@@ -38,7 +38,7 @@ class SwiftyProgressHUD: UIView {
     init(text:String?,type:SwiftyProgressHUDType,duration:TimeInterval = 1.0,hudwidth:CGFloat = 60) {
         
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        self.isUserInteractionEnabled = false
+        self.isUserInteractionEnabled = true
         self.hudtext = text
         self.hudetype = type
         self.duration = duration
