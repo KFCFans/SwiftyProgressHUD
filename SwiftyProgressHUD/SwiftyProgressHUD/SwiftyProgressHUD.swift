@@ -68,9 +68,15 @@ class SwiftyProgressHUD: UIView {
             hudview.addSubview(imgview)
             break
         case .error:
+            initHUDViewWithLabel(imgname: "hud_error", text: hudtext ?? "错误")
             break
-        default:
-            return
+        case .warn:
+            initHUDViewWithLabel(imgname: "hud_warn", text: hudtext ?? "警告")
+        case .loading:
+            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+            indicator.frame = CGRect(x: 10, y: 10, width: 40, height: 40)
+            indicator.startAnimating()
+            hudview.addSubview(indicator)
         }
         
     
@@ -89,7 +95,18 @@ class SwiftyProgressHUD: UIView {
     
     /// 失败的 HUD
     static func showFaildHUD(text:String,duration:TimeInterval){
+        SwiftyProgressHUD(text: text, type: .error, duration: duration, hudwidth: 80).show()
         
+    }
+    
+    /// 警告的 HUD
+    static func showWarnHUD(text:String,duration:TimeInterval){
+        SwiftyProgressHUD(text: text, type: .warn, duration: duration, hudwidth: 80).show()
+    }
+    
+    /// 加载的 HUD
+    static func showLoadingHUD(){
+        SwiftyProgressHUD(text: nil, type: .loading).show()
     }
     
     func show(){
@@ -114,14 +131,46 @@ class SwiftyProgressHUD: UIView {
     
     func autoRemove(duration:TimeInterval){
         
+        if let type = hudetype{
+            if type == .loading {
+                return
+            }
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + duration) { 
             self.hide()
         }
         
     }
     
-    private func initHUDViewWithLabel(){
+    private func initHUDViewWithLabel(imgname:String,text:String){
+        
+        
+        let imageview = UIImageView(frame: CGRect(x: 20, y: 10, width: 40, height: 40))
+        imageview.image = UIImage(named: imgname)
+        hudview.addSubview(imageview)
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 55, width: 80, height: 20))
+        label.text = text
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textAlignment = .center
+        hudview.addSubview(label)
         
     }
+    
+    static func hide(){
+        
+        guard let subviews = UIApplication.shared.keyWindow?.subviews else {
+            return
+        }
+        
+        for v in subviews{
+            if v.isKind(of: self) {
+                v.removeFromSuperview()
+            }
+        }
+    }
+    
     
 }

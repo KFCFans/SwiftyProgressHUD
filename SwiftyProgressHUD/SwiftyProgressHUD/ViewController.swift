@@ -32,11 +32,30 @@ class ViewController: UIViewController {
     }
 
     @IBAction func failBtn(_ sender: Any) {
+        SwiftyProgressHUD.showFaildHUD(text: "网络错误", duration: 1)
     }
 
     @IBAction func warnBtn(_ sender: Any) {
+        SwiftyProgressHUD.showWarnHUD(text: "用户名", duration: 1)
     }
     @IBAction func loadingBtn(_ sender: Any) {
+        SwiftyProgressHUD.showLoadingHUD()
+    }
+    @IBAction func endBtn(_ sender: Any) {
+    
+        UIView.animate(withDuration: 0.25, animations: { 
+            SwiftyProgressHUD.hide()
+        }) { (_) in
+            SwiftyProgressHUD.showSuccessHUD(duration: 1)
+        }
+    }
+    @IBAction func faildLoadingBtn(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.25, animations: {
+            SwiftyProgressHUD.hide()
+        }) { (_) in
+            SwiftyProgressHUD.showFaildHUD(text: "网络错误", duration: 1)
+        }
     }
 }
 
